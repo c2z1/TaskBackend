@@ -17,4 +17,14 @@ public class Task {
 	String name
 	@Property
 	Integer	prio
+	
+	override equals(Object obj) {
+		if (!(obj instanceof Task)) return false;
+		return (obj as Task).id == id
+	}
+	
+	override hashCode() {
+		id.intValue
+	}
+	
 }

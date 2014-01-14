@@ -21,26 +21,29 @@ public class TaskService {
                 val index = tasks.indexOf(new Task(id));
                 if (index != -1) throw new NotFoundException("Task Record already exists");
 
-                Task q = new Task(id, author, message);
-                Tasks.add(q);
-                return q;
+                val t = new Task(id, name, prio);
+                tasks.add(t);
+                return t;
         }
 
         @ApiMethod(name="update")
-        def Task updateTask(Task q) throws NotFoundException {
-                int index = Tasks.indexOf(q);
-                if (index == -1)
-                        throw new NotFoundException("Task Record does not exist");
-                Tasks.add(index,q);
-                return q;
+        def Task updateTask(Task t) throws NotFoundException {
+                val index = findIndex(t);
+                tasks.add(index,t);
+                return t;
+        }
+        
+        def findIndex(Task t) {
+        	val index = tasks.indexOf(t);
+            if (index == -1)
+                    throw new NotFoundException("Task Record does not exist");
+            index
         }
 
         @ApiMethod(name="remove")
-        def void removeTask(@Named("id") Integer id) throws NotFoundException {
-                int index = Tasks.indexOf(new Task(id));
-                if (index == -1)
-                        throw new NotFoundException("Task Record does not exist");
-                Tasks.remove(index);
+        def void removeTask(@Named("id") Long id) throws NotFoundException {
+                val index = findIndex(new Task(id));
+                tasks.remove(index);
         }
 
         @ApiMethod(name="list")
@@ -60,11 +63,9 @@ public class TaskService {
 //        }
 
         @ApiMethod(name="getTask")
-        public Task getTask(@Named("id") Integer id) throws NotFoundException {
-                int index = Tasks.indexOf(new Task(id));
-                if (index == -1)
-                        throw new NotFoundException("Task Record does not exist");
-                return Tasks.get(index);
+        def Task getTask(@Named("id") Long id) throws NotFoundException {
+                val index = findIndex(new Task(id));
+                return tasks.get(index);
         }
 
 }
