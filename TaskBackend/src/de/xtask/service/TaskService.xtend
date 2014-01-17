@@ -28,12 +28,12 @@ public class TaskService {
 
         @ApiMethod(name="update")
         def Task updateTask(Task t) throws NotFoundException {
-                val index = findIndex(t);
+                val index = fndIndex(t);
                 tasks.add(index,t);
                 return t;
         }
         
-        def findIndex(Task t) {
+        private def fndIndex(Task t) {
         	val index = tasks.indexOf(t);
             if (index == -1)
                     throw new NotFoundException("Task Record does not exist");
@@ -42,7 +42,7 @@ public class TaskService {
 
         @ApiMethod(name="remove")
         def void removeTask(@Named("id") Long id) throws NotFoundException {
-                val index = findIndex(new Task(id));
+                val index = fndIndex(new Task(id));
                 tasks.remove(index);
         }
 
@@ -64,7 +64,7 @@ public class TaskService {
 
         @ApiMethod(name="getTask")
         def Task getTask(@Named("id") Long id) throws NotFoundException {
-                val index = findIndex(new Task(id));
+                val index = fndIndex(new Task(id));
                 return tasks.get(index);
         }
 
